@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>迷宮選擇 - 互動故事</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+<div id="app">
+  <!-- 封面頁面 -->
+  <div id="cover-page" class="cover-page">
+    <div class="cover-content">
+      <h1 class="cover-title">魷Youth遊戲</h1>
+      <p class="cover-subtitle">點撃空白位置開始遊戲</p>
+    </div>
+  </div>
+  
+  <!-- 原有的遊戲內容 -->
+  <div id="question-container" class="question-scene hidden">
+    <div class="question-text-box">
+      <h2 id="question-title"></h2>
+      <p id="question-text"></p>
+    </div>
+    <div id="scene" class="scene-container"></div>
+    <div id="music-player" class="music-player hidden">
+      <audio id="audio-player"></audio>
+    </div>
+  </div>
+  <div id="result-container" class="result-scene hidden">
+    <h2>你的選擇之路</h2>
+    <div id="result-content"></div>
+    <button id="restart-btn" class="restart-btn">重新開始</button>
+  </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

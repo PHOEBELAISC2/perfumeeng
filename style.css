@@ -1,0 +1,936 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #000;
+  color: #fff;
+}
+
+#app {
+  width: 100vw;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* 封面頁面樣式 */
+.cover-page {
+  width: 100%;
+  height: 100vh;
+  background-image: url('WhatsApp Image 2025-07-04 at 04.49.54_df32a160.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cover-page:hover {
+  transform: scale(1.02);
+}
+
+.cover-content {
+  text-align: center;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 40px 60px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  animation: fadeInUp 1s ease-out;
+}
+
+.cover-title {
+  font-size: 4rem;
+  font-weight: bold;
+  color: #ff6b6b;
+  text-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+}
+
+.cover-subtitle {
+  font-size: 1.8rem;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  opacity: 0.9;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* 手機響應式設計 */
+@media (max-width: 768px) {
+  .cover-content {
+    padding: 30px 40px;
+  }
+  
+  .cover-title {
+    font-size: 2.8rem;
+  }
+  
+  .cover-subtitle {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cover-content {
+    padding: 20px 30px;
+  }
+  
+  .cover-title {
+    font-size: 2.2rem;
+  }
+  
+  .cover-subtitle {
+    font-size: 1.2rem;
+  }
+}
+
+.question-scene,
+.result-scene {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* 問題文字框 */
+.question-text-box {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  padding: 20px 30px;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+  text-align: center;
+  max-width: 90%;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.question-text-box h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #ffcc00;
+}
+
+.question-text-box p {
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+/* SVG場景容器 */
+.scene-container {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.scene-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* SVG熱區樣式 */
+.hotspot {
+  fill: transparent;
+  stroke: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.hotspot:hover {
+  fill: transparent;
+  stroke: none;
+}
+
+.hotspot.clicked {
+  animation: pulse 0.5s ease-out;
+  fill: transparent;
+  stroke: none;
+}
+
+/* 說明文字樣式 */
+.instruction-text {
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  pointer-events: none;
+}
+
+
+
+/* 第三題的音樂選擇 */
+.music-selection {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  text-align: center;
+  width: 90%;
+  max-width: 500px;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+.music-button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 15px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #ffcc00;
+  color: #ffcc00;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  border-radius: 8px;
+}
+
+.music-button:hover {
+  background: rgba(255, 204, 0, 0.2);
+  transform: scale(1.05);
+}
+
+.music-button.playing {
+  background: rgba(255, 204, 0, 0.4);
+  animation: musicPulse 2s ease-in-out infinite;
+}
+
+.music-button.selected {
+  background: var(--primary-color);
+  color: white;
+  border: 3px solid #ff69b4;
+  box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+}
+
+.music-button.selected.playing {
+  background: var(--primary-color);
+  color: white;
+  animation: musicPulse 2s ease-in-out infinite;
+}
+
+/* 音樂播放器 */
+.music-player {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+}
+
+audio {
+  width: 300px;
+  max-width: 90vw;
+}
+
+/* 結果頁面 */
+.result-scene {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.result-scene h2 {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: #ffcc00;
+  text-align: center;
+}
+
+#result-content {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 30px;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  max-width: 600px;
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.choice-item {
+  margin: 20px 0;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border-left: 4px solid #ffcc00;
+}
+
+.choice-item h3 {
+  color: #ffcc00;
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+}
+
+.choice-item p {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.restart-btn {
+  padding: 15px 40px;
+  font-size: 1.2rem;
+  background: #ffcc00;
+  color: #000;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.restart-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 20px rgba(255, 204, 0, 0.5);
+}
+
+/* 動畫 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes musicPulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 204, 0, 0.8);
+  }
+}
+
+/* 手機響應式設計 */
+@media (max-width: 768px) {
+  .question-text-box {
+    top: 10px;
+    padding: 15px 20px;
+  }
+  
+  .question-text-box h2 {
+    font-size: 1.2rem;
+  }
+  
+  .question-text-box p {
+    font-size: 1rem;
+  }
+  
+  .hotspot {
+    stroke: none;
+  }
+  
+  .music-button {
+    font-size: 1rem;
+    padding: 12px 15px;
+  }
+  
+  .instruction-text {
+    font-size: 16px;
+  }
+  
+  .result-scene h2 {
+    font-size: 2rem;
+  }
+  
+  #result-content {
+    padding: 20px;
+  }
+  
+  .choice-item h3 {
+    font-size: 1.1rem;
+  }
+  
+  .restart-btn {
+    padding: 12px 30px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .question-text-box {
+    padding: 12px 15px;
+  }
+  
+  .question-text-box h2 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+  
+  .question-text-box p {
+    font-size: 0.9rem;
+  }
+  
+  .music-selection {
+    bottom: 80px;
+    width: 95%;
+    max-height: calc(100vh - 160px);
+  }
+  
+  audio {
+    width: 250px;
+  }
+  
+  .instruction-text {
+    font-size: 14px;
+  }
+}
+
+/* 香水配方樣式 */
+.perfume-formula {
+  margin-top: 40px;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  border: 2px solid #ffcc00;
+  backdrop-filter: blur(10px);
+}
+
+.perfume-formula h3 {
+  font-size: 1.8rem;
+  color: #ffcc00;
+  text-align: center;
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+}
+
+.formula-total {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 25px;
+  opacity: 0.9;
+}
+
+.formula-section {
+  margin: 20px 0;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.formula-section h4 {
+  color: #ffcc00;
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.formula-list {
+  list-style: none;
+  padding-left: 20px;
+}
+
+.formula-list li {
+  padding: 8px 0;
+  font-size: 1.1rem;
+  color: #fff;
+  position: relative;
+  line-height: 1.6;
+}
+
+.formula-list li::before {
+  content: "•";
+  color: #ffcc00;
+  font-size: 1.2rem;
+  position: absolute;
+  left: -15px;
+}
+
+/* 手機響應式設計 */
+@media (max-width: 768px) {
+  .perfume-formula {
+    padding: 20px;
+    margin-top: 30px;
+  }
+  
+  .perfume-formula h3 {
+    font-size: 1.5rem;
+  }
+  
+  .formula-total {
+    font-size: 1.1rem;
+  }
+  
+  .formula-section h4 {
+    font-size: 1.2rem;
+  }
+  
+  .formula-list li {
+    font-size: 1rem;
+    padding: 6px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .perfume-formula {
+    padding: 15px;
+  }
+  
+  .perfume-formula h3 {
+    font-size: 1.3rem;
+  }
+  
+  .formula-total {
+    font-size: 1rem;
+  }
+  
+  .formula-section {
+    padding: 12px;
+  }
+  
+  .formula-section h4 {
+    font-size: 1.1rem;
+  }
+  
+  .formula-list li {
+    font-size: 0.95rem;
+  }
+}
+
+/* 香水命名區域 */
+.perfume-naming {
+  margin-top: 30px;
+  padding: 25px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  border: 2px solid #ffcc00;
+}
+
+.perfume-naming h3 {
+  font-size: 1.5rem;
+  color: #ffcc00;
+  margin-bottom: 20px;
+}
+
+#perfume-name-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #ffcc00;
+  border-radius: 8px;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+#perfume-name-input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 20px rgba(255, 204, 0, 0.3);
+}
+
+#perfume-name-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.generate-btn {
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  background: #ffcc00;
+  color: #000;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.generate-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 20px rgba(255, 204, 0, 0.5);
+}
+
+/* 配方卡樣式 */
+#perfume-card-container {
+  margin-top: 30px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.perfume-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border: 3px solid #ffcc00;
+  border-radius: 20px;
+  padding: 40px;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.perfume-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 204, 0, 0.1) 0%, transparent 70%);
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.card-header {
+  text-align: center;
+  margin-bottom: 30px;
+  position: relative;
+  z-index: 1;
+}
+
+.card-header h2 {
+  font-size: 2.5rem;
+  color: #ffcc00;
+  margin-bottom: 10px;
+  text-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
+}
+
+.card-subtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-style: italic;
+}
+
+.card-content {
+  position: relative;
+  z-index: 1;
+}
+
+.formula-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.formula-card-section {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 204, 0, 0.3);
+}
+
+.formula-card-section h4 {
+  color: #ffcc00;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.formula-card-list {
+  list-style: none;
+}
+
+.formula-card-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.formula-card-list li:last-child {
+  border-bottom: none;
+}
+
+.material-name {
+  color: #fff;
+  font-size: 1rem;
+}
+
+.material-weight {
+  color: #ffcc00;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.formula-total-weight {
+  text-align: center;
+  font-size: 1.3rem;
+  color: #ffcc00;
+  font-weight: bold;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid rgba(255, 204, 0, 0.3);
+  position: relative;
+  z-index: 1;
+}
+
+.card-footer {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.creation-date {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+}
+
+.card-signature {
+  color: #ffcc00;
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* 分享按鈕 */
+.share-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.share-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #ffcc00;
+  color: #fff;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  backdrop-filter: blur(10px);
+}
+
+.share-btn:hover {
+  background: rgba(255, 204, 0, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(255, 204, 0, 0.3);
+}
+
+.share-btn .icon {
+  font-size: 1.2rem;
+}
+
+/* Toast 提示訊息 */
+.toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: rgba(0, 0, 0, 0.9);
+  color: #ffcc00;
+  padding: 15px 30px;
+  border-radius: 50px;
+  font-size: 1rem;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  border: 2px solid #ffcc00;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .perfume-naming h3 {
+    font-size: 1.3rem;
+  }
+  
+  #perfume-name-input {
+    font-size: 1rem;
+    padding: 10px 15px;
+  }
+  
+  .generate-btn {
+    font-size: 1rem;
+    padding: 10px 25px;
+  }
+  
+  .perfume-card {
+    padding: 25px;
+  }
+  
+  .card-header h2 {
+    font-size: 2rem;
+  }
+  
+  .card-subtitle {
+    font-size: 1rem;
+  }
+  
+  .formula-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .formula-card-section {
+    padding: 15px;
+  }
+  
+  .share-btn {
+    font-size: 0.95rem;
+    padding: 10px 20px;
+  }
+  
+  .card-footer {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .perfume-naming {
+    padding: 20px;
+  }
+  
+  .perfume-naming h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+  
+  .perfume-card {
+    padding: 20px;
+  }
+  
+  .card-header h2 {
+    font-size: 1.6rem;
+  }
+  
+  .formula-card-section h4 {
+    font-size: 1.1rem;
+  }
+  
+  .material-name,
+  .material-weight {
+    font-size: 0.9rem;
+  }
+  
+  .formula-total-weight {
+    font-size: 1.1rem;
+  }
+  
+  .share-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .share-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+.confirm-button {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 15px 40px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background: #ff69b4;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+  z-index: 11;
+}
+
+.confirm-button:hover:not(:disabled) {
+  background: #ff1493;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
+}
+
+.confirm-button:disabled {
+  background: #666;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+#music-player,
+#audio-player { display: none !important; }
